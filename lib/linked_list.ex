@@ -37,10 +37,6 @@ defmodule LinkedList do
       next: next
     }
   end
-  
-  def from_list(list = []) when is_list list do
-    :empty
-  end
 
   def from_list(list) when is_list list do
     list
@@ -48,10 +44,7 @@ defmodule LinkedList do
     |> Enum.reduce(
       :empty,
       fn curr, acc ->
-        %LinkedList{
-          value: curr,
-          next: acc
-        }
+        create(curr, acc)
       end
     )
   end
