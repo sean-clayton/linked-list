@@ -42,18 +42,17 @@ defmodule LinkedList do
     :empty
   end
 
-  def from_list([head | tail] = list) when is_list list do
-    create(
-      head,
-      Enum.reduce(
-        tail |> Enum.reverse,
-        :empty,
-        fn curr, acc ->
-          create(
-            curr, acc
-          )
-        end
-      )
+  def from_list(list) when is_list list do
+    list
+    |> Enum.reverse
+    |> Enum.reduce(
+      :empty,
+      fn curr, acc ->
+        %LinkedList{
+          value: curr,
+          next: acc
+        }
+      end
     )
   end
 
