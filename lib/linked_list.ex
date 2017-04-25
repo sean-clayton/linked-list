@@ -8,50 +8,50 @@ defmodule LinkedList do
 
   defstruct value: :none, next: :none
 
-  def empty_linked_list do
+  # Empty Testing
+
+  @empty :empty
+
+  def empty?(node) do
+    node == :empty
+  end
+
+  # Creating Nodes
+
+  def create() do
+    :empty
+  end
+
+  def create(value) do
     %LinkedList{
-      value: :none,
-      next: :none
+      value: value,
+      next: :empty
     }
   end
 
-  def is_empty(%LinkedList{value: :none, next: :none}) do
-    true
+  def create(nil, _) do
+    :empty
   end
 
-  def is_empty(%LinkedList{}) do
-    false
-  end
-
-  def create(:none, :none) do
-    empty_linked_list()
-  end
-
-  def create(value, next = %LinkedList{}) do
+  def create(value, next) do
     %LinkedList{
       value: value,
       next: next
     }
   end
-
-  def create(value, :none) do
-    %LinkedList{
-      value: value,
-      next: LinkedList.empty_linked_list()
-    }
-  end
   
   def from_list(list = []) when is_list list do
-    []
+    :empty
   end
 
   def from_list([head | tail] = list) when is_list list do
-    LinkedList.create(
-      head, Enum.reduce(
+    create(
+      head,
+      Enum.reduce(
         tail |> Enum.reverse,
-        LinkedList.empty_linked_list(),
+        :empty,
         fn curr, acc ->
-          LinkedList.create(
+          create(
             curr, acc
           )
         end
@@ -59,19 +59,14 @@ defmodule LinkedList do
     )
   end
 
-  def to_list(%LinkedList{value: :none, next: :none}) do
+  def to_list(:empty) do
     []
   end
 
-  def to_list(%LinkedList{}) do
-    []
-  end
-
-  def map(%LinkedList{value: :none, next: :none}, fun) do
-    LinkedList.empty_linked_list()
-  end
-  
-  def map(%LinkedList{}, fun) do
-    
+  def to_list(%LinkedList{value: value, next: next}) do
+    [
+      value,
+      next |> to_list
+    ] |> List.flatten
   end
 end
