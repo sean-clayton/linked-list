@@ -56,4 +56,15 @@ defmodule LinkedList do
   def length(%LinkedList{ next: next }) do
     1 + LinkedList.length(next)
   end
+
+  def map(:empty, _) do
+    :empty
+  end
+
+  def map(%LinkedList{value: value, next: next}, fun) do
+    create(
+      fun.(value),
+      map(next, fun)
+    )
+  end
 end

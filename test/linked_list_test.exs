@@ -4,7 +4,7 @@ defmodule LinkedList.Test do
   import LinkedList
   require Logger
 
-  test "create/2" do
+  test "create" do
     assert create(1) == %LinkedList{ value: 1, next: :empty }
     assert (create(1, create(2))) == %LinkedList{
       value: 1,
@@ -46,6 +46,12 @@ defmodule LinkedList.Test do
     assert [] |> from_list |> LinkedList.length == 0
     assert [1] |> from_list |> LinkedList.length == 1
     assert [1, 2, 3] |> from_list |> LinkedList.length == 3
+  end
+
+  test "map/2" do
+    assert [] |> from_list |> map(fn x -> x * 2 end) |> to_list == []
+    assert [1] |> from_list |> map(fn x -> x * 2 end) |> to_list == [2]
+    assert [1, 2, 3] |> from_list |> map(fn x -> x * 2 end) |> to_list == [2, 4, 6]
   end
   
 end
