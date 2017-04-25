@@ -195,6 +195,8 @@ defmodule LinkedList do
     )
   end
 
+  # Compare nodes
+
   def eq(:empty, :empty), do: true
   def eq(:empty, _), do: false
   def eq(_, :empty), do: false
