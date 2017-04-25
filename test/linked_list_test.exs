@@ -42,5 +42,11 @@ defmodule LinkedList.Test do
     assert [1] |> from_list |> to_list == [1]
     assert [1, 2, 3] |> from_list |> to_list == [1, 2, 3]
   end
+
+  test "length/1" do
+    assert [] |> from_list |> LinkedList.length == 0
+    assert [1] |> from_list |> LinkedList.length == 1
+    assert [1, 2, 3] |> from_list |> LinkedList.length == 3
+  end
   
 end

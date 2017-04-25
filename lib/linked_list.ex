@@ -10,8 +10,6 @@ defmodule LinkedList do
 
   # Empty Testing
 
-  @empty :empty
-
   def empty?(node) do
     node == :empty
   end
@@ -68,5 +66,13 @@ defmodule LinkedList do
       value,
       next |> to_list
     ] |> List.flatten
+  end
+
+  def length(:empty) do
+    0
+  end
+
+  def length(%LinkedList{ next: next }) do
+    1 + LinkedList.length(next)
   end
 end
