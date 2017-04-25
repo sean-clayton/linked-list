@@ -97,4 +97,10 @@ defmodule LinkedList.Test do
     assert [1] |> from_list |> reverse |> to_list == [1]
     assert [3, 2, 1] |> from_list |> reverse |> to_list == [1, 2, 3]
   end
+
+  test "every/2" do
+    assert [] |> from_list |> every(fn x -> x < 5 end) == false
+    assert [1] |> from_list |> every(fn x -> x < 5 end) == true
+    assert [1, 2, 4, 8] |> from_list |> every(fn x -> x < 5 end) == false
+  end
 end
