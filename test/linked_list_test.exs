@@ -65,4 +65,10 @@ defmodule LinkedList.Test do
     assert [1] |> from_list |> reduce(0, fn curr, acc -> curr + acc end) == 1
     assert [1, 2, 3, 4, 5] |> from_list |> reduce(0, fn curr, acc -> curr + acc end) == 15
   end
+
+  test "join/2" do
+    assert join(create(), " ") == ""
+    assert join(create(1), " ") == "1"
+    assert join(create(1, create(2, create(3))), " ") == "1 2 3"
+  end
 end

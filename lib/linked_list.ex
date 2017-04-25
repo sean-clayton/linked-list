@@ -88,4 +88,17 @@ defmodule LinkedList do
   def reduce(%LinkedList{ value: value, next: next }, initial_value, fun) do
     reduce(next, fun.(initial_value, value), fun)
   end
+
+  def join(:empty, _) do
+    ""
+  end
+
+  def join(%LinkedList{ value: value, next: next }, delim) do
+    cond do
+      next == :empty ->
+        "#{value}"
+      true ->
+        "#{value}#{delim}#{join(next, delim)}"
+    end
+  end
 end
