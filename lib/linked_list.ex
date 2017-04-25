@@ -38,6 +38,8 @@ defmodule LinkedList do
     )
   end
 
+  # Exporting Nodes
+
   def to_list(:empty) do
     []
   end
@@ -49,6 +51,8 @@ defmodule LinkedList do
     ] |> List.flatten
   end
 
+  # Get length of nodes
+
   def length(:empty) do
     0
   end
@@ -56,6 +60,8 @@ defmodule LinkedList do
   def length(%LinkedList{ next: next }) do
     1 + LinkedList.length(next)
   end
+
+  # Map nodes
 
   def map(:empty, _) do
     :empty
@@ -67,6 +73,8 @@ defmodule LinkedList do
       map(next, fun)
     )
   end
+
+  # Filter nodes
 
   def filter(:empty, _) do
     :empty
@@ -81,6 +89,8 @@ defmodule LinkedList do
     end
   end
 
+  # Reduce nodes
+
   def reduce(:empty, initial_value, _) do
     initial_value
   end
@@ -89,11 +99,13 @@ defmodule LinkedList do
     reduce(next, fun.(initial_value, value), fun)
   end
 
+  # Convert node values to strings
+
   def join(:empty, _) do
     ""
   end
 
-  def join(%LinkedList{ value: value, next: next }, delim) do
+  def join(%LinkedList{ value: value, next: next }, delim \\ "") do
     cond do
       next == :empty ->
         "#{value}"

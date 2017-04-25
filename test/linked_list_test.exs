@@ -69,6 +69,7 @@ defmodule LinkedList.Test do
   test "join/2" do
     assert join(create(), " ") == ""
     assert join(create(1), " ") == "1"
+    assert join(create(1, create(2, create(3)))) == "123"
     assert join(create(1, create(2, create(3))), " ") == "1 2 3"
   end
 end
