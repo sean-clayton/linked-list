@@ -161,11 +161,35 @@ defmodule LinkedList do
 
   def every(:empty, _fun), do: false
 
-  def every(node = %LinkedList{ value: value, next: next }, fun) do
+  def every(node = %LinkedList{}, fun) do
     reduce(
       node,
-      false,
-      fn acc, curr -> fun.(curr) end
+      true,
+      fn acc, curr ->
+        cond do
+          acc == false ->
+            false
+          true ->
+            fun.(curr)
+        end
+      end
+    )
+  end
+
+  def some(:empty, _fun), do: false
+
+  def some(node = %LinkedList{}, fun) do
+    reduce(
+      node,
+      true,
+      fn acc, curr ->
+        cond do
+          acc == true ->
+            true
+          true ->
+            fun.(curr)
+        end
+      end
     )
   end
 end
