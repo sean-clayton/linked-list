@@ -80,4 +80,12 @@ defmodule LinkedList do
         filter(next, fun)
     end
   end
+
+  def reduce(:empty, initial_value, _) do
+    initial_value
+  end
+
+  def reduce(%LinkedList{ value: value, next: next }, initial_value, fun) do
+    reduce(next, fun.(initial_value, value), fun)
+  end
 end

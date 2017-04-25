@@ -60,4 +60,9 @@ defmodule LinkedList.Test do
     assert [1, 2, 2, 4, 3, 6, 4, 8] |> from_list |> filter(fn x -> x < 5 end) |> to_list == [1, 2, 2, 4, 3, 4]
   end
   
+  test "reduce/3" do
+    assert [] |> from_list |> reduce(0, fn curr, acc -> curr + acc end) == 0
+    assert [1] |> from_list |> reduce(0, fn curr, acc -> curr + acc end) == 1
+    assert [1, 2, 3, 4, 5] |> from_list |> reduce(0, fn curr, acc -> curr + acc end) == 15
+  end
 end
