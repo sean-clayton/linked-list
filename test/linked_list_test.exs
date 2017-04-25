@@ -5,7 +5,6 @@ defmodule LinkedList.Test do
   require Logger
 
   test "create/2" do
-    assert create() == :empty
     assert create(1) == %LinkedList{ value: 1, next: :empty }
     assert (create(1, create(2))) == %LinkedList{
       value: 1,

@@ -20,18 +20,7 @@ defmodule LinkedList do
     :empty
   end
 
-  def create(value) do
-    %LinkedList{
-      value: value,
-      next: :empty
-    }
-  end
-
-  def create(nil, _) do
-    :empty
-  end
-
-  def create(value, next) do
+  def create(value, next \\ :empty) do
     %LinkedList{
       value: value,
       next: next
