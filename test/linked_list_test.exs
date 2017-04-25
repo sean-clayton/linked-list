@@ -3,8 +3,18 @@ defmodule LinkedList.Test do
 
   import LinkedList
 
-  test "create_linked_list/2" do
-    assert LinkedList.create_linked_list(1, :none) == %LinkedList{ value: 1, next: LinkedList.empty_linked_list() }
+  test "create/2" do
+    assert create(:none, :none) == %LinkedList{ value: :none, next: :none}
+    assert create(1, :none) == %LinkedList{ value: 1, next: empty_linked_list() }
+    assert (
+      create(
+        1,
+        create(
+          2,
+          :none
+        )
+      )
+    ) |> to_list == [1, 2]
   end
 
   test "from_list/1" do
