@@ -109,4 +109,12 @@ defmodule LinkedList.Test do
     assert [1] |> from_list |> some(fn x -> x < 5 end) == true
     assert [9, 8, 4, 6] |> from_list |> some(fn x -> x < 5 end) == true
   end
+
+  test "eq/2" do
+    assert eq([] |> from_list, [] |> from_list) == true
+    assert eq([1] |> from_list, [] |> from_list) == false
+    assert eq([] |> from_list, [1] |> from_list) == false
+    assert eq([1, 2] |> from_list, [3, 4] |> from_list) == false
+    assert eq([5, 6, 7, 8] |> from_list, [5, 6, 7, 8] |> from_list) == true
+  end
 end

@@ -159,6 +159,8 @@ defmodule LinkedList do
     )
   end
 
+  # Testing node value truthiness
+
   def every(:empty, _fun), do: false
 
   def every(node = %LinkedList{}, fun) do
@@ -191,5 +193,12 @@ defmodule LinkedList do
         end
       end
     )
+  end
+
+  def eq(:empty, :empty), do: true
+  def eq(:empty, _), do: false
+  def eq(_, :empty), do: false
+  def eq(node_a = %LinkedList{}, node_b = %LinkedList{}) do
+    node_a == node_b
   end
 end
