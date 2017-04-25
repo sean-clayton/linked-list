@@ -23,14 +23,18 @@ defmodule LinkedList do
     false
   end
 
-  def create_linked_list(value, next = %LinkedList{}) do
+  def create(:none, :none) do
+    empty_linked_list()
+  end
+
+  def create(value, next = %LinkedList{}) do
     %LinkedList{
       value: value,
       next: next
     }
   end
 
-  def create_list_linked_list(value, :none) do
+  def create(value, :none) do
     %LinkedList{
       value: value,
       next: LinkedList.empty_linked_list()
@@ -42,12 +46,12 @@ defmodule LinkedList do
   end
 
   def from_list([head | tail] = list) when is_list list do
-    LinkedList.create_linked_list(
+    LinkedList.create(
       head, Enum.reduce(
         tail |> Enum.reverse,
         LinkedList.empty_linked_list(),
         fn curr, acc ->
-          LinkedList.create_linked_list(
+          LinkedList.create(
             curr, acc
           )
         end
