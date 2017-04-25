@@ -22,6 +22,20 @@ defmodule LinkedList do
   def is_empty(%LinkedList{}) do
     false
   end
+
+  def create_linked_list(value, next = %LinkedList{}) do
+    %LinkedList{
+      value: value,
+      next: next
+    }
+  end
+
+  def create_list_linked_list(value, :none) do
+    %LinkedList{
+      value: value,
+      next: LinkedList.empty_linked_list()
+    }
+  end
   
   def from_list(list = []) when is_list list do
     []
@@ -47,20 +61,6 @@ defmodule LinkedList do
 
   def to_list(%LinkedList{}) do
     []
-  end
-
-  def create_linked_list(value, next = %LinkedList{}) do
-    %LinkedList{
-      value: value,
-      next: next
-    }
-  end
-
-  def create_list(value, :none) do
-    %LinkedList{
-      value: value,
-      next: LinkedList.empty_linked_list()
-    }
   end
 
   def map(%LinkedList{value: :none, next: :none}, fun) do
