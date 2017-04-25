@@ -85,4 +85,10 @@ defmodule LinkedList.Test do
     assert concat(:empty, [2] |> from_list) |> to_list == [2]
     assert concat(create(1), create(2)) |> to_list == [1, 2]
   end
+
+  test "sort/2" do
+    assert [] |> from_list |> sort |> to_list == []
+    assert [1] |> from_list |> sort |> to_list == [1]
+    assert [3, 2, 1] |> from_list |> sort |> to_list == [1, 2, 3]
+  end
 end

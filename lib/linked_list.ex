@@ -126,13 +126,24 @@ defmodule LinkedList do
     end
   end
 
+  # Concating nodes
+
   def concat(:empty, :empty), do: :empty
-
   def concat(node_a = %LinkedList{}, :empty), do: node_a
-
   def concat(:empty, node_b = %LinkedList{}), do: node_b
 
   def concat(node_a = %LinkedList{}, node_b = %LinkedList{}) do
     create(node_a.value, concat(node_a.next, node_b))
+  end
+
+  # Sorting nodes
+  # I really feel like there should be a sorting function in here
+  
+  def sort(:empty), do: :empty
+
+  def sort(%LinkedList{ value: value, next: next}) do
+    left = filter(next, fn n -> n < value end)
+    right = filter(next, fn n -> n > value end)
+    concat(sort(left), concat(create(value, :empty), sort(right)))
   end
 end
