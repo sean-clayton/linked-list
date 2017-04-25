@@ -17,7 +17,7 @@ defmodule LinkedList do
 
   # Creating Nodes
 
-  def create() do
+  def create do
     :empty
   end
 
@@ -58,7 +58,7 @@ defmodule LinkedList do
     0
   end
 
-  def length(%LinkedList{ next: next }) do
+  def length(%LinkedList{next: next}) do
     1 + LinkedList.length(next)
   end
 
@@ -81,7 +81,7 @@ defmodule LinkedList do
     :empty
   end
 
-  def filter(%LinkedList{ value: value, next: next }, fun) do
+  def filter(%LinkedList{value: value, next: next}, fun) do
     cond do
       fun.(value) == true ->
         create(value, filter(next, fun))
@@ -96,7 +96,7 @@ defmodule LinkedList do
     initial_value
   end
 
-  def reduce(%LinkedList{ value: value, next: next }, initial_value, fun) do
+  def reduce(%LinkedList{value: value, next: next}, initial_value, fun) do
     reduce(next, fun.(initial_value, value), fun)
   end
 
@@ -108,7 +108,7 @@ defmodule LinkedList do
     ""
   end
 
-  def join(%LinkedList{ value: value, next: next }, delim) do
+  def join(%LinkedList{value: value, next: next}, delim) do
     cond do
       next == :empty ->
         "#{value}"
@@ -138,10 +138,10 @@ defmodule LinkedList do
 
   # Sorting nodes
   # I really feel like there should be a sorting function in here
-  
+
   def sort(:empty), do: :empty
 
-  def sort(%LinkedList{ value: value, next: next }) do
+  def sort(%LinkedList{value: value, next: next}) do
     left = filter(next, fn n -> n < value end)
     right = filter(next, fn n -> n > value end)
     concat(sort(left), concat(create(value, :empty), sort(right)))
