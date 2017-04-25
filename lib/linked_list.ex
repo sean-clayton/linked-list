@@ -67,4 +67,17 @@ defmodule LinkedList do
       map(next, fun)
     )
   end
+
+  def filter(:empty, _) do
+    :empty
+  end
+
+  def filter(%LinkedList{ value: value, next: next }, fun) do
+    cond do
+      fun.(value) == true ->
+        create(value, filter(next, fun))
+      true ->
+        filter(next, fun)
+    end
+  end
 end

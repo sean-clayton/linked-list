@@ -53,5 +53,11 @@ defmodule LinkedList.Test do
     assert [1] |> from_list |> map(fn x -> x * 2 end) |> to_list == [2]
     assert [1, 2, 3] |> from_list |> map(fn x -> x * 2 end) |> to_list == [2, 4, 6]
   end
+
+  test "filter/2" do
+    assert [] |> from_list |> filter(fn x -> x < 5 end) |> to_list == []
+    assert [1] |> from_list |> filter(fn x -> x < 5 end) |> to_list == [1]
+    assert [1, 2, 2, 4, 3, 6, 4, 8] |> from_list |> filter(fn x -> x < 5 end) |> to_list == [1, 2, 2, 4, 3, 4]
+  end
   
 end
