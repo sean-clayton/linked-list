@@ -141,9 +141,21 @@ defmodule LinkedList do
   
   def sort(:empty), do: :empty
 
-  def sort(%LinkedList{ value: value, next: next}) do
+  def sort(%LinkedList{ value: value, next: next }) do
     left = filter(next, fn n -> n < value end)
     right = filter(next, fn n -> n > value end)
     concat(sort(left), concat(create(value, :empty), sort(right)))
+  end
+
+  # Reversing nodes
+
+  def reverse(:empty), do: :empty
+
+  def reverse(node = %LinkedList{}) do
+    reduce(
+      node,
+      :empty,
+      fn acc, curr -> create(curr, acc) end
+    )
   end
 end
