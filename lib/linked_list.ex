@@ -125,4 +125,14 @@ defmodule LinkedList do
         "[" <> join(:empty) <> "]"
     end
   end
+
+  def concat(:empty, :empty), do: :empty
+
+  def concat(node_a = %LinkedList{}, :empty), do: node_a
+
+  def concat(:empty, node_b = %LinkedList{}), do: node_b
+
+  def concat(node_a = %LinkedList{}, node_b = %LinkedList{}) do
+    create(node_a.value, concat(node_a.next, node_b))
+  end
 end

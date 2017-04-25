@@ -78,4 +78,11 @@ defmodule LinkedList.Test do
     assert [1] |> from_list |> LinkedList.to_string == "[1]"
     assert [1, 2, 3] |> from_list |> LinkedList.to_string == "[1, 2, 3]"
   end
+
+  test "concat/2" do
+    assert concat(:empty, :empty) |> to_list == []
+    assert concat([1] |> from_list, :empty) |> to_list == [1]
+    assert concat(:empty, [2] |> from_list) |> to_list == [2]
+    assert concat(create(1), create(2)) |> to_list == [1, 2]
+  end
 end
