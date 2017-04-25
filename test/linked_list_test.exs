@@ -72,4 +72,10 @@ defmodule LinkedList.Test do
     assert [1, 2, 3] |> from_list |> join == "123"
     assert [1, 2, 3] |> from_list |> join(" ") == "1 2 3"
   end
+
+  test "to_string/1" do
+    assert [] |> from_list |> LinkedList.to_string == "[]"
+    assert [1] |> from_list |> LinkedList.to_string == "[1]"
+    assert [1, 2, 3] |> from_list |> LinkedList.to_string == "[1, 2, 3]"
+  end
 end

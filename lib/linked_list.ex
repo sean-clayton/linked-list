@@ -6,7 +6,8 @@ defmodule LinkedList do
   """
   require Logger
 
-  defstruct value: :none, next: :none
+  @enforce_keys [:value, :next]
+  defstruct [:value, :next]
 
   # Empty Testing
 
@@ -101,16 +102,27 @@ defmodule LinkedList do
 
   # Convert node values to strings
 
+  def join(node, delim \\ "")
+
   def join(:empty, _) do
     ""
   end
 
-  def join(%LinkedList{ value: value, next: next }, delim \\ "") do
+  def join(%LinkedList{ value: value, next: next }, delim) do
     cond do
       next == :empty ->
         "#{value}"
       true ->
         "#{value}#{delim}#{join(next, delim)}"
+    end
+  end
+
+  def to_string(node) do
+    cond do
+      node ->
+        "[" <> join(node, ", ") <> "]"
+      true ->
+        "[" <> join(:empty) <> "]"
     end
   end
 end
