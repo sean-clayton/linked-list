@@ -7,11 +7,12 @@ defmodule LinkedList do
   require Logger
 
   @enforce_keys [:value, :next]
+  @type t :: %LinkedList{value: any, next: :empty | %LinkedList{}}
   defstruct [:value, :next]
 
   # Empty Testing
 
-  @spec empty?(%LinkedList{}) :: boolean
+  @spec empty?(t) :: boolean
   def empty?(node) do
     node == :empty
   end
@@ -23,7 +24,7 @@ defmodule LinkedList do
     :empty
   end
 
-  @spec create(any, %LinkedList{} | :empty) :: %LinkedList{}
+  @spec create(any, t | :empty) :: t
   def create(value, next \\ :empty) do
     %LinkedList{
       value: value,
@@ -31,7 +32,7 @@ defmodule LinkedList do
     }
   end
 
-  @spec from_list(list) :: %LinkedList{}
+  @spec from_list(list) :: t
   def from_list(list) when is_list list do
     list
     |> Enum.reverse
@@ -50,7 +51,7 @@ defmodule LinkedList do
     []
   end
 
-  @spec to_list(%LinkedList{}) :: [any]
+  @spec to_list(t) :: [any]
   def to_list(%LinkedList{value: value, next: next}) do
     [
       value,
@@ -65,7 +66,7 @@ defmodule LinkedList do
     0
   end
 
-  @spec length(%LinkedList{}) :: non_neg_integer
+  @spec length(t) :: non_neg_integer
   def length(%LinkedList{next: next}) do
     1 + LinkedList.length(next)
   end
@@ -77,7 +78,7 @@ defmodule LinkedList do
     :empty
   end
 
-  @spec map(%LinkedList{}, ((any) -> any)) :: %LinkedList{}
+  @spec map(t, ((any) -> any)) :: t
   def map(%LinkedList{value: value, next: next}, fun) do
     create(
       fun.(value),
@@ -92,7 +93,7 @@ defmodule LinkedList do
     :empty
   end
 
-  @spec filter(%LinkedList{}, ((any) -> boolean)) :: %LinkedList{}
+  @spec filter(t, ((any) -> boolean)) :: t
   def filter(%LinkedList{value: value, next: next}, fun) do
     cond do
       fun.(value) == true ->
@@ -109,7 +110,7 @@ defmodule LinkedList do
     initial_value
   end
 
-  @spec reduce(%LinkedList{}, any, ((any, any) -> any)) :: any
+  @spec reduce(t, any, ((any, any) -> any)) :: any
   def reduce(%LinkedList{value: value, next: next}, initial_value, fun) do
     reduce(next, fun.(initial_value, value), fun)
   end
@@ -123,7 +124,7 @@ defmodule LinkedList do
     ""
   end
 
-  @spec join(%LinkedList{}, binary) :: binary
+  @spec join(t, binary) :: binary
   def join(%LinkedList{value: value, next: next}, delim) do
     cond do
       next == :empty ->
@@ -133,7 +134,7 @@ defmodule LinkedList do
     end
   end
 
-  @spec to_string(%LinkedList{}) :: binary
+  @spec to_string(t) :: binary
   def to_string(node) do
     cond do
       node ->
@@ -148,13 +149,13 @@ defmodule LinkedList do
   @spec concat(:empty, :empty) :: :empty
   def concat(:empty, :empty), do: :empty
 
-  @spec concat(%LinkedList{}, :empty) :: %LinkedList{}
+  @spec concat(t, :empty) :: t
   def concat(node_a = %LinkedList{}, :empty), do: node_a
 
-  @spec concat(:empty, %LinkedList{}) :: %LinkedList{}
+  @spec concat(:empty, t) :: t
   def concat(:empty, node_b = %LinkedList{}), do: node_b
 
-  @spec concat(%LinkedList{}, %LinkedList{}) :: %LinkedList{}
+  @spec concat(t, t) :: t
   def concat(node_a = %LinkedList{}, node_b = %LinkedList{}) do
     create(node_a.value, concat(node_a.next, node_b))
   end
@@ -165,7 +166,7 @@ defmodule LinkedList do
   @spec sort(:empty) :: :empty
   def sort(:empty), do: :empty
 
-  @spec sort(%LinkedList{}) :: %LinkedList{}
+  @spec sort(t) :: t
   def sort(%LinkedList{value: value, next: next}) do
     left = filter(next, fn n -> n < value end)
     right = filter(next, fn n -> n > value end)
@@ -177,7 +178,7 @@ defmodule LinkedList do
   @spec reverse(:empty) :: :empty
   def reverse(:empty), do: :empty
 
-  @spec reverse(%LinkedList{}) :: %LinkedList{}
+  @spec reverse(t) :: t
   def reverse(node = %LinkedList{}) do
     reduce(
       node,
@@ -191,7 +192,7 @@ defmodule LinkedList do
   @spec every(:empty, any) :: false
   def every(:empty, _fun), do: false
 
-  @spec every(%LinkedList{}, ((any, any) -> boolean)) :: boolean
+  @spec every(t, ((any, any) -> boolean)) :: boolean
   def every(node = %LinkedList{}, fun) do
     reduce(
       node,
@@ -210,7 +211,7 @@ defmodule LinkedList do
   @spec some(:empty, any) :: false
   def some(:empty, _fun), do: false
 
-  @spec some(%LinkedList{}, ((any, any) -> boolean)) :: boolean
+  @spec some(t, ((any, any) -> boolean)) :: boolean
   def some(node = %LinkedList{}, fun) do
     reduce(
       node,
@@ -237,7 +238,7 @@ defmodule LinkedList do
   @spec eq(any, :empty) :: false
   def eq(_, :empty), do: false
 
-  @spec eq(%LinkedList{}, %LinkedList{}) :: boolean
+  @spec eq(t, t) :: boolean
   def eq(node_a = %LinkedList{}, node_b = %LinkedList{}) do
     node_a == node_b
   end
