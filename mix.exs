@@ -7,7 +7,9 @@ defmodule LinkedList.Mixfile do
      elixir: "~> 1.4",
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
-     deps: deps()]
+     deps: deps(),
+     test_coverage: [tool: ExCoveralls],
+     preferred_cli_env: ["coveralls": :test, "coveralls.detail": :test, "coveralls.post": :test, "coveralls.html": :test]]
   end
 
   # Configuration for the OTP application
@@ -32,6 +34,7 @@ defmodule LinkedList.Mixfile do
       {:mix_test_watch, "~> 0.3", only: :dev, runtime: false},
       {:credo, "~> 0.7", only: [:dev, :test]},
       {:dialyxir, "~> 0.5", only: [:dev], runtime: false},
+      {:excoveralls, "~> 0.6", only: :test},
     ]
   end
 end
