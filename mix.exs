@@ -30,7 +30,8 @@ defmodule LinkedList.Mixfile do
   defp deps do
     [
       {:mix_test_watch, "~> 0.3", only: :dev, runtime: false},
-      {:credo, "~> 0.7", only: [:dev, :test]}
+      {:credo, "~> 0.7", only: [:dev, :test]},
+      {:dialyxir, "~> 0.5", only: [:dev], runtime: false},
     ]
   end
 end
