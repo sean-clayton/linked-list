@@ -46,10 +46,7 @@ defmodule LinkedList do
 
   @spec to_list(t) :: [any]
   def to_list(%LinkedList{value: value, next: next}) do
-    [
-      value,
-      next |> to_list
-    ] |> List.flatten
+    [value, to_list(next)] |> List.flatten
   end
 
   # Get length of nodes
