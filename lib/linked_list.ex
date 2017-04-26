@@ -12,16 +12,12 @@ defmodule LinkedList do
   # Empty Testing
 
   @spec empty?(t) :: boolean
-  def empty?(node) do
-    node == :empty
-  end
+  def empty?(node), do: node == :empty
 
   # Creating Nodes
 
   @spec create :: :empty
-  def create do
-    :empty
-  end
+  def create, do: :empty
 
   @spec create(any, t | :empty) :: t
   def create(value, next \\ :empty) do
@@ -46,9 +42,7 @@ defmodule LinkedList do
   # Exporting Nodes
 
   @spec to_list(:empty) :: []
-  def to_list(:empty) do
-    []
-  end
+  def to_list(:empty), do: []
 
   @spec to_list(t) :: [any]
   def to_list(%LinkedList{value: value, next: next}) do
@@ -61,9 +55,7 @@ defmodule LinkedList do
   # Get length of nodes
 
   @spec length(:empty) :: 0
-  def length(:empty) do
-    0
-  end
+  def length(:empty), do: 0
 
   @spec length(t) :: non_neg_integer
   def length(%LinkedList{next: next}) do
@@ -73,9 +65,7 @@ defmodule LinkedList do
   # Map nodes
 
   @spec map(:empty, any) :: :empty
-  def map(:empty, _) do
-    :empty
-  end
+  def map(:empty, _), do: :empty
 
   @spec map(t, ((any) -> any)) :: t
   def map(%LinkedList{value: value, next: next}, fun) do
@@ -88,17 +78,14 @@ defmodule LinkedList do
   # Filter nodes
 
   @spec filter(:empty, any) :: :empty
-  def filter(:empty, _) do
-    :empty
-  end
+  def filter(:empty, _), do: :empty
 
   @spec filter(t, ((any) -> boolean)) :: t
   def filter(%LinkedList{value: value, next: next}, fun) do
-    cond do
-      fun.(value) == true ->
-        create(value, filter(next, fun))
-      true ->
-        filter(next, fun)
+    if (fun.(value) == true) do
+      create(value, filter(next, fun))
+    else
+      filter(next, fun)
     end
   end
 
@@ -125,11 +112,10 @@ defmodule LinkedList do
 
   @spec join(t, binary) :: binary
   def join(%LinkedList{value: value, next: next}, delim) do
-    cond do
-      next == :empty ->
-        "#{value}"
-      true ->
-        "#{value}#{delim}#{join(next, delim)}"
+    if next == :empty do
+      "#{value}"
+    else
+      "#{value}#{delim}#{join(next, delim)}"
     end
   end
 
@@ -190,12 +176,7 @@ defmodule LinkedList do
       node,
       true,
       fn acc, curr ->
-        cond do
-          acc == false ->
-            false
-          true ->
-            fun.(curr)
-        end
+        if acc == false, do: false, else: fun.(curr)
       end
     )
   end
@@ -209,12 +190,7 @@ defmodule LinkedList do
       node,
       false,
       fn acc, curr ->
-        cond do
-          acc == true ->
-            true
-          true ->
-            fun.(curr)
-        end
+        if acc == true, do: true, else: fun.(curr)
       end
     )
   end
