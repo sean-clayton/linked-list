@@ -232,10 +232,10 @@ defmodule LinkedList do
   @spec eq(:empty, :empty) :: true
   def eq(:empty, :empty), do: true
 
-  @spec eq(:empty, any) :: false
+  @spec eq(:empty, t) :: false
   def eq(:empty, _), do: false
 
-  @spec eq(any, :empty) :: false
+  @spec eq(t, :empty) :: false
   def eq(_, :empty), do: false
 
   @spec eq(t, t) :: boolean
