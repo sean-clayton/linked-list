@@ -39,14 +39,14 @@ defmodule LinkedList.Test do
     assert [] |> from_list |> to_list == []
     assert [1] |> from_list |> to_list == [1]
     assert [1, 2, 3] |> from_list |> to_list == [1, 2, 3]
-    assert 1..1000 |> Enum.to_list |> from_list |> to_list == 1..1000 |> Enum.to_list 
+    assert 1..10000 |> Enum.to_list |> from_list |> to_list == 1..10000 |> Enum.to_list 
   end
 
   test "length/1" do
     assert [] |> from_list |> LinkedList.length == 0
     assert [1] |> from_list |> LinkedList.length == 1
     assert [1, 2, 3] |> from_list |> LinkedList.length == 3
-    assert 1..1000 |> Enum.to_list |> from_list |> LinkedList.length == 1000
+    assert 1..10000 |> Enum.to_list |> from_list |> LinkedList.length == 10000
   end
 
   test "map/2" do
@@ -65,7 +65,7 @@ defmodule LinkedList.Test do
     assert [] |> from_list |> reduce(0, fn curr, acc -> curr + acc end) == 0
     assert [1] |> from_list |> reduce(0, fn curr, acc -> curr + acc end) == 1
     assert [1, 2, 3, 4, 5] |> from_list |> reduce(0, fn curr, acc -> curr + acc end) == 15
-    assert 1..1000 |> Enum.to_list |> from_list |> reduce(0, fn curr, acc -> curr + acc end) == 1..1000 |> Enum.sum
+    assert 1..10000 |> Enum.to_list |> from_list |> reduce(0, fn curr, acc -> curr + acc end) == 1..10000 |> Enum.sum
   end
 
   test "join/2" do
@@ -73,7 +73,7 @@ defmodule LinkedList.Test do
     assert [1] |> from_list |> join(" ") == "1"
     assert [1, 2, 3] |> from_list |> join == "123"
     assert [1, 2, 3] |> from_list |> join(" ") == "1 2 3"
-    assert 1..1000 |> Enum.to_list |> from_list |> join == 1..1000 |> Enum.to_list |> Enum.join
+    assert 1..10000 |> Enum.to_list |> from_list |> join == 1..10000 |> Enum.to_list |> Enum.join
   end
 
   test "to_string/1" do
@@ -88,37 +88,37 @@ defmodule LinkedList.Test do
     assert concat(:empty, [2] |> from_list) |> to_list == [2]
     assert concat(create(1), create(2)) |> to_list == [1, 2]
     assert concat(
-      1..1000 |> Enum.to_list |> from_list,
-      1001..2000 |> Enum.to_list |> from_list
-    ) |> to_list == 1..2000 |> Enum.to_list
+      1..10000 |> Enum.to_list |> from_list,
+      10001..20001 |> Enum.to_list |> from_list
+    ) |> to_list == 1..20001 |> Enum.to_list
   end
 
   test "sort/1" do
     assert [] |> from_list |> sort |> to_list == []
     assert [1] |> from_list |> sort |> to_list == [1]
     assert [3, 2, 1] |> from_list |> sort |> to_list == [1, 2, 3]
-    assert 1000..1 |> Enum.to_list |> from_list |> sort |> to_list == 1..1000 |> Enum.to_list
+    assert 10000..1 |> Enum.to_list |> from_list |> sort |> to_list == 1..10000 |> Enum.to_list
   end
 
   test "reverse/1" do
     assert [] |> from_list |> reverse |> to_list == []
     assert [1] |> from_list |> reverse |> to_list == [1]
     assert [3, 2, 1] |> from_list |> reverse |> to_list == [1, 2, 3]
-    assert 1..1000 |> Enum.to_list |> from_list |> reverse |> to_list == 1000..1 |> Enum.to_list
+    assert 1..10000 |> Enum.to_list |> from_list |> reverse |> to_list == 10000..1 |> Enum.to_list
   end
 
   test "every/2" do
     assert [] |> from_list |> every(fn x -> x < 5 end) == false
     assert [1] |> from_list |> every(fn x -> x < 5 end) == true
     assert [1, 2, 4, 8, 2] |> from_list |> every(fn x -> x < 5 end) == false
-    assert 1000..6 |> Enum.to_list |> from_list |> every(fn x -> x > 5 end) == true
+    assert 10000..6 |> Enum.to_list |> from_list |> every(fn x -> x > 5 end) == true
   end
 
   test "some/2" do
     assert [] |> from_list |> some(fn x -> x < 5 end) == false
     assert [1] |> from_list |> some(fn x -> x < 5 end) == true
     assert [9, 8, 4, 6] |> from_list |> some(fn x -> x < 5 end) == true
-    assert 1000..6 |> Enum.to_list |> from_list |> some(fn x -> x < 5 end) == false
+    assert 10000..6 |> Enum.to_list |> from_list |> some(fn x -> x < 5 end) == false
   end
 
   test "eq/2" do
@@ -127,6 +127,6 @@ defmodule LinkedList.Test do
     assert eq([] |> from_list, [1] |> from_list) == false
     assert eq([1, 2] |> from_list, [3, 4] |> from_list) == false
     assert eq([5, 6, 7, 8] |> from_list, [5, 6, 7, 8] |> from_list) == true
-    assert eq(1..1000 |> Enum.to_list |> from_list, 1..1000 |> Enum.to_list |> from_list) == true
+    assert eq(1..10000 |> Enum.to_list |> from_list, 1..10000 |> Enum.to_list |> from_list) == true
   end
 end
