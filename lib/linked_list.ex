@@ -4,7 +4,6 @@ defmodule LinkedList do
 
   An O(n) linked list library.
   """
-  require Logger
 
   @enforce_keys [:value, :next]
   @type t :: %LinkedList{value: any, next: :empty | %LinkedList{}}
@@ -135,14 +134,7 @@ defmodule LinkedList do
   end
 
   @spec to_string(t) :: binary
-  def to_string(node) do
-    cond do
-      node ->
-        "[" <> join(node, ", ") <> "]"
-      true ->
-        "[" <> join(:empty) <> "]"
-    end
-  end
+  def to_string(node), do: "[" <> join(node, ", ") <> "]"
 
   # Concating nodes
 
@@ -215,7 +207,7 @@ defmodule LinkedList do
   def some(node = %LinkedList{}, fun) do
     reduce(
       node,
-      true,
+      false,
       fn acc, curr ->
         cond do
           acc == true ->

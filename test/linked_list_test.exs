@@ -2,7 +2,6 @@ defmodule LinkedList.Test do
   use ExUnit.Case, async: true
 
   import LinkedList
-  require Logger
 
   test "create" do
     assert create(1) == %LinkedList{ value: 1, next: :empty }
@@ -108,6 +107,7 @@ defmodule LinkedList.Test do
     assert [] |> from_list |> some(fn x -> x < 5 end) == false
     assert [1] |> from_list |> some(fn x -> x < 5 end) == true
     assert [9, 8, 4, 6] |> from_list |> some(fn x -> x < 5 end) == true
+    assert [1000..10] |> from_list |> some(fn x -> x < 5 end) == false
   end
 
   test "eq/2" do
@@ -116,5 +116,6 @@ defmodule LinkedList.Test do
     assert eq([] |> from_list, [1] |> from_list) == false
     assert eq([1, 2] |> from_list, [3, 4] |> from_list) == false
     assert eq([5, 6, 7, 8] |> from_list, [5, 6, 7, 8] |> from_list) == true
+    assert eq([1..1000] |> from_list, [1..1000] |> from_list) == true
   end
 end
