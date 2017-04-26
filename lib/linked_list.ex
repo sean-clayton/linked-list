@@ -66,10 +66,7 @@ defmodule LinkedList do
 
   @spec map(t, ((any) -> any)) :: t
   def map(%LinkedList{value: value, next: next}, fun) do
-    create(
-      fun.(value),
-      map(next, fun)
-    )
+    create(fun.(value), map(next, fun))
   end
 
   # Filter nodes
