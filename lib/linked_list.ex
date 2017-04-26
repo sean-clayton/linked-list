@@ -61,8 +61,8 @@ defmodule LinkedList do
 
   # Map nodes
 
-  @spec map(:empty, any) :: :empty
-  def map(:empty, _), do: :empty
+  @spec map(:empty, ((any) -> any)) :: :empty
+  def map(:empty, _fun), do: :empty
 
   @spec map(t, ((any) -> any)) :: t
   def map(%LinkedList{value: value, next: next}, fun) do
@@ -71,8 +71,8 @@ defmodule LinkedList do
 
   # Filter nodes
 
-  @spec filter(:empty, any) :: :empty
-  def filter(:empty, _), do: :empty
+  @spec filter(:empty, ((any) -> boolean)) :: :empty
+  def filter(:empty, _fun), do: :empty
 
   @spec filter(t, ((any) -> boolean)) :: t
   def filter(%LinkedList{value: value, next: next}, fun) do
@@ -86,7 +86,7 @@ defmodule LinkedList do
   # Reduce nodes
 
   @spec reduce(:empty, any, any) :: any
-  def reduce(:empty, initial_value, _) do
+  def reduce(:empty, initial_value, _fun) do
     initial_value
   end
 
@@ -99,8 +99,8 @@ defmodule LinkedList do
 
   def join(node, delim \\ "")
 
-  @spec join(:empty, any) :: <<>>
-  def join(:empty, _) do
+  @spec join(:empty, binary) :: <<>>
+  def join(:empty, _delim) do
     ""
   end
 
@@ -195,10 +195,10 @@ defmodule LinkedList do
   def eq(:empty, :empty), do: true
 
   @spec eq(:empty, t) :: false
-  def eq(:empty, _), do: false
+  def eq(:empty, _node), do: false
 
   @spec eq(t, :empty) :: false
-  def eq(_, :empty), do: false
+  def eq(_node, :empty), do: false
 
   @spec eq(t, t) :: boolean
   def eq(node_a = %LinkedList{}, node_b = %LinkedList{}) do
