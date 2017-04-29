@@ -414,4 +414,11 @@ defmodule LinkedListSpec do
       ) |> to(eq false)
     end
   end
+
+  describe "Enumerable protocol support" do
+    it "converts a linked list to an enumerable" do
+      expect(LinkedList.create(1) |> Enum.to_list)
+      |> to(eq [1])
+    end
+  end
 end
