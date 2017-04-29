@@ -415,10 +415,60 @@ defmodule LinkedListSpec do
     end
   end
 
-  describe "Enumerable protocol support" do
-    it "converts a linked list to an enumerable" do
-      expect(LinkedList.create(1) |> Enum.to_list)
-      |> to(eq [1])
+  describe "Enumerable count implementation" do
+    it "returns a count of an empty linked list" do
+      expect(LinkedList.create() |> Enum.count)
+      |> to(eq {:ok, 0})
+    end
+
+    it "returns a count of a single-node linked list" do
+      expect(LinkedList.create(1) |> Enum.count)
+      |> to(eq {:ok, 1})
+    end
+
+    it "returns a count of a large linked list" do
+      expect(LinkedList.create(1, LinkedList.create(2, LinkedList.create(3))) |> Enum.count)
+      |> to(eq {:ok, 3})
+    end
+  end
+
+  describe "Enumerable member? implementation" do
+    it "returns false if given an empty linked list" do
+      expect(LinkedList.create() |> Enum.member?(1))
+      |> to(eq {:ok, false})
+    end
+
+    it "determines if a node exists in a single-node linked list" do
+      expect(LinkedList.create(1) |> Enum.member?(1))
+      |> to(eq {:ok, true})
+
+      expect(LinkedList.create(1) |> Enum.member?(0))
+      |> to(eq {:ok, false})
+    end
+
+    it "determines if a node exists in a large linked list" do
+      expect(LinkedList.create(1, LinkedList.create(2, LinkedList.create(3))) |> Enum.member?(1))
+      |> to(eq {:ok, true})
+
+      expect(LinkedList.create(1, LinkedList.create(2, LinkedList.create(3))) |> Enum.member?(0))
+      |> to(eq {:ok, false})
+    end
+  end
+
+  describe "Enumerable reduce implementation" do
+    it "reduces an empty linked list" do
+      expect(LinkedList.create() |> Enum.reduce(0, fn curr, acc -> curr + acc end))
+      |> to(eq {:ok, 0})
+    end
+
+    it "reduces a single-node linked list" do
+      expect(LinkedList.create(1) |> Enum.reduce(0, fn curr, acc -> curr + acc end))
+      |> to(eq {:ok, 1})
+    end
+
+    it "reduces a large linked list" do
+      expect(LinkedList.create(1, LinkedList.create(2, LinkedList.create(3))) |> Enum.reduce(0, fn curr, acc -> curr + acc end))
+      |> to(eq {:ok, 6})
     end
   end
 end
