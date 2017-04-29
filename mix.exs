@@ -39,7 +39,6 @@ defmodule LinkedList.Mixfile do
   # Type "mix help deps" for more examples and options
   defp deps do
     [
-      {:mix_test_watch, "~> 0.3", only: :dev, runtime: false},
       {:credo, "~> 0.7", only: [:dev, :test]},
       {:dialyxir, "~> 0.5", only: [:dev], runtime: false},
       {:excoveralls, "~> 0.6", only: :test},
