@@ -1,4 +1,4 @@
-![Build status](https://travis-ci.org/sean-clayton/linked-list.svg?branch=master)
+[![Build status](https://travis-ci.org/sean-clayton/linked-list.svg?branch=master)](https://travis-ci.org/sean-clayton/linked-list)
 
 # LinkedList
 
