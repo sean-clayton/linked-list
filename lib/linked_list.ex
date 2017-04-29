@@ -3,19 +3,52 @@ defmodule LinkedList do
   ## LinkedList
 
   An O(n) linked list library.
+
+  Linked lists are really just structs, and have this signature:
+
+  ```elixir
+  %LinkedList{
+    value: any,
+    next: %LinkedList{} | :empty
+  }
+  ```
+
+  A node is either a linked list or an `:empty` atom.
   """
 
   @enforce_keys [:value, :next]
-  @type t :: %LinkedList{value: any, next: :empty | %LinkedList{}}
+  @type t :: %LinkedList{value: any, next: t} | :empty
   defstruct [:value, :next]
 
   # Empty Testing
 
+  @doc """
+  Tests if a node is empty or not
+
+  ## Examples
+  
+    iex> LinkedList.empty?(%LinkedList{value: 1, next: :empty})
+    false
+
+    iex> LinkedList.empty?(:empty)
+    true
+  """
   @spec empty?(t) :: boolean
   def empty?(node), do: node == :empty
 
   # Creating Nodes
 
+  @doc """
+  Creates a linked list node
+
+  ## Examples
+
+    iex> LinkedList.create
+    :empty
+
+    iex> LinkedList.create(1, :empty)
+    %LinkedList{value: 1, next: :empty}
+  """
   @spec create :: :empty
   def create, do: :empty
 
@@ -27,7 +60,7 @@ defmodule LinkedList do
     }
   end
 
-  @spec from_list(list) :: t
+  @spec from_list([any]) :: t
   def from_list(list) when is_list list do
     list
     |> Enum.reverse
