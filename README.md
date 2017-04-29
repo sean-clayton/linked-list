@@ -1,3 +1,5 @@
+![Build status](https://travis-ci.org/sean-clayton/linked-list.svg?branch=master)
+
 # LinkedList
 
 **TODO: Add description**
