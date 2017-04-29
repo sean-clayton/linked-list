@@ -9,12 +9,7 @@ defmodule LinkedList.Mixfile do
       build_embedded: Mix.env == :prod,
       start_permanent: Mix.env == :prod,
       deps: deps(),
-      test_coverage: [tool: ExCoveralls],
       preferred_cli_env: [
-        "coveralls": :test,
-        "coveralls.detail": :test,
-        "coveralls.post": :test,
-        "coveralls.html": :test,
         espec: :test,
       ]
     ]
@@ -41,7 +36,6 @@ defmodule LinkedList.Mixfile do
     [
       {:credo, "~> 0.7", only: [:dev, :test]},
       {:dialyxir, "~> 0.5", only: [:dev], runtime: false},
-      {:excoveralls, "~> 0.6", only: :test},
       {:espec, "~> 1.3.4", only: [:dev, :test]},
     ]
   end
