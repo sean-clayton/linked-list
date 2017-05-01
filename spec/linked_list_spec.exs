@@ -503,7 +503,7 @@ defmodule LinkedListSpec do
       ) |> to(eq 1)
     end
 
-    fit "reduces a large linked list" do
+    it "reduces a large linked list" do
       expect(
         [1, 2, 3]
         |> LinkedList.from_list
