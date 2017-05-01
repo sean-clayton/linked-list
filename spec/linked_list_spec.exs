@@ -488,18 +488,27 @@ defmodule LinkedListSpec do
 
   describe "Enumerable reduce implementation" do
     it "reduces an empty linked list" do
-      expect(LinkedList.create() |> Enum.reduce(0, fn curr, acc -> curr + acc end))
-      |> to(eq 0)
+      expect(
+        []
+        |> LinkedList.from_list
+        |> Enum.reduce(0, fn curr, acc -> curr + acc end)
+      ) |> to(eq 0)
     end
 
     it "reduces a single-node linked list" do
-      expect(LinkedList.create(1) |> Enum.reduce(0, fn curr, acc -> curr + acc end))
-      |> to(eq 1)
+      expect(
+        [1]
+        |> LinkedList.from_list
+        |> Enum.reduce(0, fn curr, acc -> curr + acc end)
+      ) |> to(eq 1)
     end
 
     it "reduces a large linked list" do
-      expect(LinkedList.create(1, LinkedList.create(2, LinkedList.create(3))) |> Enum.reduce(0, fn curr, acc -> curr + acc end))
-      |> to(eq 6)
+      expect(
+        [1, 2, 3]
+        |> LinkedList.from_list
+        |> Enum.reduce(0, fn curr, acc -> curr + acc end)
+      ) |> to(eq 6)
     end
   end
 end
