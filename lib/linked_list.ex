@@ -122,7 +122,9 @@ defmodule LinkedList do
   # Concating nodes
 
   @spec concat(empty, empty) :: empty
-  def concat(%LinkedList{value: nil, next: nil}, %LinkedList{value: nil, next: nil}), do: %LinkedList{value: nil, next: nil}
+  def concat(%LinkedList{value: nil, next: nil}, %LinkedList{value: nil, next: nil}) do
+    %LinkedList{value: nil, next: nil}
+  end
 
   @spec concat(t, empty) :: t
   def concat(node_a = %LinkedList{}, %LinkedList{value: nil, next: nil}), do: node_a
@@ -145,7 +147,10 @@ defmodule LinkedList do
   def sort(%LinkedList{value: value, next: next}) do
     left = filter(next, fn n -> n < value end)
     right = filter(next, fn n -> n > value end)
-    concat(sort(left), concat(create(value, %LinkedList{value: nil, next: nil}), sort(right)))
+    concat(
+      sort(left),
+      concat(create(value, %LinkedList{value: nil, next: nil}), sort(right))
+    )
   end
 
   # Reversing nodes
