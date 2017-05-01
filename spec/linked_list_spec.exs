@@ -181,6 +181,31 @@ defmodule LinkedListSpec do
         |> LinkedList.reduce(0, fn curr, acc -> curr + acc end)
       ) |> to(eq 15)
     end
+
+    it "reduces an empty linked list without an initial value" do
+      expect(
+        []
+        |> LinkedList.from_list
+        |> LinkedList.reduce(fn curr, acc -> curr + acc end)
+        |> LinkedList.to_list
+      ) |> to(eq [])
+    end
+
+    it "reduces a single-node linked list without an initial value" do
+      expect(
+        [1]
+        |> LinkedList.from_list
+        |> LinkedList.reduce(fn curr, acc -> curr + acc end)
+      ) |> to(eq 1)
+    end
+
+    it "reduces a large linked list without an initial value" do
+      expect(
+        [1, 2, 3]
+        |> LinkedList.from_list
+        |> LinkedList.reduce(fn curr, acc -> curr + acc end)
+      ) |> to(eq 6)
+    end
   end
 
   context "join" do

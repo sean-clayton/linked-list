@@ -88,6 +88,17 @@ defmodule LinkedList do
 
   # Reduce nodes
 
+  @spec reduce(empty, ((any, any) -> any)) :: any
+  def reduce(%LinkedList{value: nil, next: nil}, _fun), do: %LinkedList{value: nil, next: nil}
+
+  @spec reduce(t, ((any, any) -> any)) :: any
+  def reduce(%LinkedList{value: value, next: %LinkedList{value: nil, next: nil}}, _fun), do: value
+
+  @spec reduce(t, ((any, any) -> any)) :: any
+  def reduce(%LinkedList{value: value, next: next}, fun) do
+    reduce(next, value, fun)
+  end
+
   @spec reduce(empty, any, any) :: any
   def reduce(%LinkedList{value: nil, next: nil}, initial_value, _fun) do
     initial_value
