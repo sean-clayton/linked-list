@@ -7,8 +7,12 @@ defimpl Enumerable, for: LinkedList do
     {:ok, LinkedList.some(node, fn x -> x == value end)}
   end
 
-  def reduce(_, {:halt, acc}, _fun), do: {:halted, acc}
-  def reduce(node, {:suspend, acc}, fun), do: {:suspended, acc, &reduce(node, &1, fun)}
-  def reduce(%LinkedList{value: nil, next: nil}, {:cont, acc}, _fun), do: {:done, acc}
-  def reduce(node, initial_value, fun), do: LinkedList.reduce(node, initial_value, fun)
+  def reduce(node, initial_value, fun) do
+    reduce_list(LinkedList.to_list(node), initial_value, fun)
+  end
+
+  defp reduce_list(_,       {:halt, acc}, _fun),   do: {:halted, acc}
+  defp reduce_list(list,    {:suspend, acc}, fun), do: {:suspended, acc, &reduce_list(list, &1, fun)}
+  defp reduce_list([],      {:cont, acc}, _fun),   do: {:done, acc}
+  defp reduce_list([h | t], {:cont, acc}, fun),    do: reduce_list(t, fun.(h, acc), fun)
 end

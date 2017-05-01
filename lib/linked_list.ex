@@ -5,6 +5,8 @@ defmodule LinkedList do
   An O(n) linked list library.
   """
 
+  require Logger
+
   @enforce_keys [:value, :next]
   @type t :: %LinkedList{value: any, next: nil | %LinkedList{}}
   @type empty :: %LinkedList{value: nil, next: nil}
