@@ -503,12 +503,26 @@ defmodule LinkedListSpec do
       ) |> to(eq 1)
     end
 
-    fit "reduces a large linked list" do
+    it "reduces a large linked list" do
       expect(
         [1, 2, 3]
         |> LinkedList.from_list
         |> Enum.reduce(0, fn curr, acc -> curr + acc end)
       ) |> to(eq 6)
+    end
+  end
+
+  describe "Inspect implementation" do
+    it "inspects an empty linked list" do
+      expect([] |> LinkedList.from_list |> inspect) |> to(eq "[]")
+    end
+
+    it "inspects an single-node linked list" do
+      expect([1] |> LinkedList.from_list |> inspect) |> to(eq "[1]")
+    end
+
+    it "inspects a large linked list" do
+      expect([1, 2, 3] |> LinkedList.from_list |> inspect) |> to(eq "[1, 2, 3]")
     end
   end
 end
