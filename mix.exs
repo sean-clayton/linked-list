@@ -33,6 +33,7 @@ defmodule LinkedList.Mixfile do
       {:dialyxir, "~> 0.5", only: [:dev], runtime: false},
       {:espec, "~> 1.3.4", only: [:dev, :test]},
       {:excoveralls, "~> 0.6", only: :test},
+      {:ex_doc, "~> 0.14", only: :dev, runtime: false},
     ]
   end
 end
