@@ -1,8 +1,19 @@
 defmodule LinkedList do
   @moduledoc """
-  ## LinkedList
+  Provides a set of of tools to work with linked lists.
 
-  An O(n) linked list library.
+  A linked list can be represented as a regular list:
+
+      iex> [1, 2, 3] |> LinkedList.from_list
+      [1, 2, 3]
+  
+  Or as a struct:
+
+      iex> %LinkedList{value: 1, next: %LinkedList{value: nil, next: nil}}
+      [1]
+  
+  As per definition of a linked list, linked lists created with this library have an empty node
+  at the end of each list.
   """
 
   require Logger
@@ -14,10 +25,31 @@ defmodule LinkedList do
 
   # Empty Testing
 
+  @doc """
+  Checks if a linked list node is empty or not.
+
+  ## Examples
+
+      iex> LinkedList.empty?(LinkedList.create())
+      true
+  """
+
   @spec empty?(t) :: boolean
   def empty?(node), do: node == %LinkedList{value: nil, next: nil}
 
   # Creating Nodes
+
+  @doc """
+  Creates a linked list node. Useful for chaining.
+
+  ## Examples
+
+      iex> LinkedList.create(1, LinkedList.create(2, LinkedList.create(3)))
+      [1, 2, 3]
+
+      iex> LinkedList.create()
+      []
+  """
 
   @spec create :: empty
   def create, do: %LinkedList{value: nil, next: nil}
@@ -32,6 +64,18 @@ defmodule LinkedList do
     }
   end
 
+  @doc """
+  Converts a regular list to a linked list.
+
+  ## Examples
+
+      iex> list = LinkedList.from_list([2, 4, 6, 8])
+      [2, 4, 6, 8]
+
+      iex> LinkedList.empty?(list)
+      false
+  """
+
   @spec from_list(list) :: t
   def from_list(list) when is_list list do
     list
@@ -45,6 +89,10 @@ defmodule LinkedList do
   end
 
   # Exporting Nodes
+  
+  @doc """
+  Converts a linked list to a regular list.
+  """
 
   @spec to_list(empty) :: []
   def to_list(%LinkedList{value: nil, next: nil}), do: []
