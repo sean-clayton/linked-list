@@ -1,71 +1,86 @@
 defmodule LinkedList do
   @moduledoc """
-  ## LinkedList
+  Provides a set of of tools to work with linked lists.
 
-  An O(n) linked list library.
+  A linked list can be represented as a regular list:
 
-  Linked lists are really just structs, and have this signature:
+      iex> [1, 2, 3] |> LinkedList.from_list
+      [1, 2, 3]
+  
+  Or as a struct:
 
-  ```elixir
-  %LinkedList{
-    value: any,
-    next: %LinkedList{} | :empty
-  }
-  ```
-
-  A node is either a linked list or an `:empty` atom.
+      iex> %LinkedList{value: 1, next: %LinkedList{value: nil, next: nil}}
+      [1]
+  
+  As per definition of a linked list, linked lists created with this library have an empty node
+  at the end of each list.
   """
+
+  require Logger
 
   @enforce_keys [:value, :next]
   @type t :: %LinkedList{value: any, next: t} | :empty
+  @type empty :: %LinkedList{value: nil, next: nil}
   defstruct [:value, :next]
 
   # Empty Testing
 
   @doc """
-  Tests if a node is empty or not
+  Checks if a linked list node is empty or not.
 
   ## Examples
-  
-    iex> LinkedList.empty?(%LinkedList{value: 1, next: :empty})
-    false
 
-    iex> LinkedList.empty?(:empty)
-    true
+      iex> LinkedList.empty?(LinkedList.create())
+      true
   """
+
   @spec empty?(t) :: boolean
-  def empty?(node), do: node == :empty
+  def empty?(node), do: node == %LinkedList{value: nil, next: nil}
 
   # Creating Nodes
 
   @doc """
-  Creates a linked list node
+  Creates a linked list node. Useful for chaining.
 
   ## Examples
 
-    iex> LinkedList.create
-    :empty
+      iex> LinkedList.create(1, LinkedList.create(2, LinkedList.create(3)))
+      [1, 2, 3]
 
-    iex> LinkedList.create(1, :empty)
-    %LinkedList{value: 1, next: :empty}
+      iex> LinkedList.create()
+      []
   """
-  @spec create :: :empty
-  def create, do: :empty
 
-  @spec create(any, t | :empty) :: t
-  def create(value, next \\ :empty) do
+  @spec create :: empty
+  def create, do: %LinkedList{value: nil, next: nil}
+
+  def create(value, next \\ %LinkedList{value: nil, next: nil})
+
+  @spec create(any, t | empty) :: t
+  def create(value, next) do
     %LinkedList{
       value: value,
       next: next
     }
   end
 
+  @doc """
+  Converts a list into a linked list.
+
+  ## Examples
+      iex> list = LinkedList.from_list([1, 2, 3])
+      [1, 2, 3]
+
+      iex> LinkedList.empty?(list)
+      false
+  """
+
   @spec from_list([any]) :: t
   def from_list(list) when is_list list do
     list
     |> Enum.reverse
     |> Enum.reduce(
-      :empty,
+      %LinkedList{value: nil, next: nil},
       fn curr, acc ->
         create(curr, acc)
       end
@@ -74,8 +89,23 @@ defmodule LinkedList do
 
   # Exporting Nodes
 
-  @spec to_list(:empty) :: []
-  def to_list(:empty), do: []
+  @doc """
+  Converts a linked list to a regular list.
+
+  ## Examples
+  
+      iex> llist = LinkedList.create(1, LinkedList.create(2, LinkedList.create(3)))
+      [1, 2, 3]
+
+      iex> list = LinkedList.to_list(llist)
+      [1, 2, 3]
+
+      iex> is_list(list)
+      true
+  """
+
+  @spec to_list(empty) :: []
+  def to_list(%LinkedList{value: nil, next: nil}), do: []
 
   @spec to_list(t) :: [any]
   def to_list(%LinkedList{value: value, next: next}) do
@@ -84,8 +114,20 @@ defmodule LinkedList do
 
   # Get length of nodes
 
-  @spec length(:empty) :: 0
-  def length(:empty), do: 0
+  @doc """
+  Get the length of a linked list.
+
+  ## Examples
+
+      iex> LinkedList.length LinkedList.create()
+      0
+
+      iex> LinkedList.length LinkedList.create(5, LinkedList.create(4))
+      2
+  """
+
+  @spec length(empty) :: 0
+  def length(%LinkedList{value: nil, next: nil}), do: 0
 
   @spec length(t) :: non_neg_integer
   def length(%LinkedList{next: next}) do
@@ -94,8 +136,8 @@ defmodule LinkedList do
 
   # Map nodes
 
-  @spec map(:empty, ((any) -> any)) :: :empty
-  def map(:empty, _fun), do: :empty
+  @spec map(empty, ((any) -> any)) :: empty
+  def map(%LinkedList{value: nil, next: nil}, _fun), do: %LinkedList{value: nil, next: nil}
 
   @spec map(t, ((any) -> any)) :: t
   def map(%LinkedList{value: value, next: next}, fun) do
@@ -104,8 +146,8 @@ defmodule LinkedList do
 
   # Filter nodes
 
-  @spec filter(:empty, ((any) -> boolean)) :: :empty
-  def filter(:empty, _fun), do: :empty
+  @spec filter(empty, ((any) -> boolean)) :: empty
+  def filter(%LinkedList{value: nil, next: nil}, _fun), do: %LinkedList{value: nil, next: nil}
 
   @spec filter(t, ((any) -> boolean)) :: t
   def filter(%LinkedList{value: value, next: next}, fun) do
@@ -118,8 +160,19 @@ defmodule LinkedList do
 
   # Reduce nodes
 
-  @spec reduce(:empty, any, any) :: any
-  def reduce(:empty, initial_value, _fun) do
+  @spec reduce(empty, ((any, any) -> any)) :: empty
+  def reduce(%LinkedList{value: nil, next: nil}, _fun), do: %LinkedList{value: nil, next: nil}
+
+  @spec reduce(t, ((any, any) -> any)) :: any
+  def reduce(%LinkedList{value: value, next: %LinkedList{value: nil, next: nil}}, _fun), do: value
+
+  @spec reduce(t, ((any, any) -> any)) :: any
+  def reduce(%LinkedList{value: value, next: next}, fun) do
+    reduce(next, value, fun)
+  end
+
+  @spec reduce(empty, any, any) :: any
+  def reduce(%LinkedList{value: nil, next: nil}, initial_value, _fun) do
     initial_value
   end
 
@@ -132,14 +185,14 @@ defmodule LinkedList do
 
   def join(node, delim \\ "")
 
-  @spec join(:empty, binary) :: <<>>
-  def join(:empty, _delim) do
+  @spec join(empty, binary) :: <<>>
+  def join(%LinkedList{value: nil, next: nil}, _delim) do
     ""
   end
 
   @spec join(t, binary) :: binary
   def join(%LinkedList{value: value, next: next}, delim) do
-    if next == :empty do
+    if next == %LinkedList{value: nil, next: nil} do
       "#{value}"
     else
       "#{value}#{delim}#{join(next, delim)}"
@@ -151,14 +204,16 @@ defmodule LinkedList do
 
   # Concating nodes
 
-  @spec concat(:empty, :empty) :: :empty
-  def concat(:empty, :empty), do: :empty
+  @spec concat(empty, empty) :: empty
+  def concat(%LinkedList{value: nil, next: nil}, %LinkedList{value: nil, next: nil}) do
+    %LinkedList{value: nil, next: nil}
+  end
 
-  @spec concat(t, :empty) :: t
-  def concat(node_a = %LinkedList{}, :empty), do: node_a
+  @spec concat(t, empty) :: t
+  def concat(node_a = %LinkedList{}, %LinkedList{value: nil, next: nil}), do: node_a
 
-  @spec concat(:empty, t) :: t
-  def concat(:empty, node_b = %LinkedList{}), do: node_b
+  @spec concat(empty, t) :: t
+  def concat(%LinkedList{value: nil, next: nil}, node_b = %LinkedList{}), do: node_b
 
   @spec concat(t, t) :: t
   def concat(node_a = %LinkedList{}, node_b = %LinkedList{}) do
@@ -168,34 +223,37 @@ defmodule LinkedList do
   # Sorting nodes
   # I really feel like there should be a sorting function in here
 
-  @spec sort(:empty) :: :empty
-  def sort(:empty), do: :empty
+  @spec sort(empty) :: empty
+  def sort(%LinkedList{value: nil, next: nil}), do: %LinkedList{value: nil, next: nil}
 
   @spec sort(t) :: t
   def sort(%LinkedList{value: value, next: next}) do
     left = filter(next, fn n -> n < value end)
     right = filter(next, fn n -> n > value end)
-    concat(sort(left), concat(create(value, :empty), sort(right)))
+    concat(
+      sort(left),
+      concat(create(value, %LinkedList{value: nil, next: nil}), sort(right))
+    )
   end
 
   # Reversing nodes
 
-  @spec reverse(:empty) :: :empty
-  def reverse(:empty), do: :empty
+  @spec reverse(empty) :: empty
+  def reverse(%LinkedList{value: nil, next: nil}), do: %LinkedList{value: nil, next: nil}
 
   @spec reverse(t) :: t
   def reverse(node = %LinkedList{}) do
     reduce(
       node,
-      :empty,
+      %LinkedList{value: nil, next: nil},
       fn acc, curr -> create(curr, acc) end
     )
   end
 
   # Testing node value truthiness
 
-  @spec every(:empty, any) :: false
-  def every(:empty, _fun), do: false
+  @spec every(empty, any) :: false
+  def every(%LinkedList{value: nil, next: nil}, _fun), do: false
 
   @spec every(t, ((any, any) -> boolean)) :: boolean
   def every(node = %LinkedList{}, fun) do
@@ -208,8 +266,8 @@ defmodule LinkedList do
     )
   end
 
-  @spec some(:empty, any) :: false
-  def some(:empty, _fun), do: false
+  @spec some(empty, any) :: false
+  def some(%LinkedList{value: nil, next: nil}, _fun), do: false
 
   @spec some(t, ((any, any) -> boolean)) :: boolean
   def some(node = %LinkedList{}, fun) do
@@ -224,14 +282,14 @@ defmodule LinkedList do
 
   # Compare nodes
 
-  @spec eq(:empty, :empty) :: true
-  def eq(:empty, :empty), do: true
+  @spec eq(empty, empty) :: true
+  def eq(%LinkedList{value: nil, next: nil}, %LinkedList{value: nil, next: nil}), do: true
 
-  @spec eq(:empty, t) :: false
-  def eq(:empty, _node), do: false
+  @spec eq(empty, t) :: false
+  def eq(%LinkedList{value: nil, next: nil}, _node), do: false
 
-  @spec eq(t, :empty) :: false
-  def eq(_node, :empty), do: false
+  @spec eq(t, empty) :: false
+  def eq(_node, %LinkedList{value: nil, next: nil}), do: false
 
   @spec eq(t, t) :: boolean
   def eq(node_a = %LinkedList{}, node_b = %LinkedList{}) do

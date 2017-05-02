@@ -1,4 +1,5 @@
 [![Build status](https://travis-ci.org/sean-clayton/linked-list.svg?branch=master)](https://travis-ci.org/sean-clayton/linked-list)
+[![Coverage Status](https://coveralls.io/repos/github/sean-clayton/linked-list/badge.svg?branch=master)](https://coveralls.io/github/sean-clayton/linked-list?branch=master)
 
 # LinkedList
 

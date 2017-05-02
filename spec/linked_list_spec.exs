@@ -4,13 +4,16 @@ defmodule LinkedListSpec do
 
   context "create" do
     it "creates an empty node" do
-      expect LinkedList.create() |> to(eq :empty)
+      expect LinkedList.create() |> to(eq %LinkedList{value: nil, next: nil})
     end
 
     it "creates a single node" do
       expect LinkedList.create(1) |> to(eq %LinkedList{
         value: 1,
-        next: :empty
+        next: %LinkedList{
+          value: nil,
+          next: nil
+        }
       })
     end
 
@@ -23,7 +26,10 @@ defmodule LinkedListSpec do
           value: 2,
           next: %LinkedList{
             value: 3,
-            next: :empty
+            next: %LinkedList{
+              value: nil,
+              next: nil
+            }
           }
         }
       })
@@ -32,7 +38,7 @@ defmodule LinkedListSpec do
 
   context "empty?" do
     it "can tell if an empty node is empty" do
-      expect LinkedList.empty?(:empty)
+      expect LinkedList.empty?(%LinkedList{value: nil, next: nil})
       |> to(eq true)
     end
 
@@ -175,6 +181,31 @@ defmodule LinkedListSpec do
         |> LinkedList.reduce(0, fn curr, acc -> curr + acc end)
       ) |> to(eq 15)
     end
+
+    it "reduces an empty linked list without an initial value" do
+      expect(
+        []
+        |> LinkedList.from_list
+        |> LinkedList.reduce(fn curr, acc -> curr + acc end)
+        |> LinkedList.to_list
+      ) |> to(eq [])
+    end
+
+    it "reduces a single-node linked list without an initial value" do
+      expect(
+        [1]
+        |> LinkedList.from_list
+        |> LinkedList.reduce(fn curr, acc -> curr + acc end)
+      ) |> to(eq 1)
+    end
+
+    it "reduces a large linked list without an initial value" do
+      expect(
+        [1, 2, 3]
+        |> LinkedList.from_list
+        |> LinkedList.reduce(fn curr, acc -> curr + acc end)
+      ) |> to(eq 6)
+    end
   end
 
   context "join" do
@@ -240,21 +271,21 @@ defmodule LinkedListSpec do
   context "concat" do
     it "returns an empty linked list if given empty linked lists" do
       expect(
-        LinkedList.concat(:empty, :empty)
+        LinkedList.concat(LinkedList.create(), LinkedList.create())
         |> LinkedList.to_list
       ) |> to(eq [])
     end
 
     it "concats a linked list with an empty linked list" do
       expect(
-        LinkedList.concat(LinkedList.create(1), :empty)
+        LinkedList.concat(LinkedList.create(1), LinkedList.create())
         |> LinkedList.to_list
       ) |> to(eq [1])
     end
 
     it "concats an empty linked list with a linked list" do
       expect(
-        LinkedList.concat(:empty, LinkedList.create(5))
+        LinkedList.concat(LinkedList.create(), LinkedList.create(5))
         |> LinkedList.to_list
       ) |> to(eq [5])
     end
@@ -387,18 +418,18 @@ defmodule LinkedListSpec do
 
   context "eq" do
     it "returns true if given empty linked lists" do
-      expect(LinkedList.eq(:empty, :empty)) |> to(eq true)
+      expect(LinkedList.eq(LinkedList.create(), LinkedList.create())) |> to(eq true)
     end
 
     it "checks if a non-empty linked list is equal to an empty linked list" do
       expect(
-        LinkedList.eq(LinkedList.create(1), :empty)
+        LinkedList.eq(LinkedList.create(1), LinkedList.create())
       ) |> to(eq false)
     end
 
     it "checks if an empty linked list is equal to a non-empty linked list" do
       expect(
-        LinkedList.eq(:empty, LinkedList.create(1))
+        LinkedList.eq(LinkedList.create(), LinkedList.create(1))
       ) |> to(eq false)
     end
 
@@ -412,6 +443,86 @@ defmodule LinkedListSpec do
       expect(
         LinkedList.eq(LinkedList.create(1), LinkedList.create(2))
       ) |> to(eq false)
+    end
+  end
+
+  describe "Enumerable count implementation" do
+    it "returns a count of an empty linked list" do
+      expect(LinkedList.create() |> Enum.count)
+      |> to(eq 0)
+    end
+
+    it "returns a count of a single-node linked list" do
+      expect(LinkedList.create(1) |> Enum.count)
+      |> to(eq 1)
+    end
+
+    it "returns a count of a large linked list" do
+      expect(LinkedList.create(1, LinkedList.create(2, LinkedList.create(3))) |> Enum.count)
+      |> to(eq 3)
+    end
+  end
+
+  describe "Enumerable member? implementation" do
+    it "returns false if given an empty linked list" do
+      expect(LinkedList.create() |> Enum.member?(1))
+      |> to(eq false)
+    end
+
+    it "determines if a node exists in a single-node linked list" do
+      expect(LinkedList.create(1) |> Enum.member?(1))
+      |> to(eq true)
+
+      expect(LinkedList.create(1) |> Enum.member?(0))
+      |> to(eq false)
+    end
+
+    it "determines if a node exists in a large linked list" do
+      expect(LinkedList.create(1, LinkedList.create(2, LinkedList.create(3))) |> Enum.member?(1))
+      |> to(eq true)
+
+      expect(LinkedList.create(1, LinkedList.create(2, LinkedList.create(3))) |> Enum.member?(0))
+      |> to(eq false)
+    end
+  end
+
+  describe "Enumerable reduce implementation" do
+    it "reduces an empty linked list" do
+      expect(
+        []
+        |> LinkedList.from_list
+        |> Enum.reduce(0, fn curr, acc -> curr + acc end)
+      ) |> to(eq 0)
+    end
+
+    it "reduces a single-node linked list" do
+      expect(
+        [1]
+        |> LinkedList.from_list
+        |> Enum.reduce(0, fn curr, acc -> curr + acc end)
+      ) |> to(eq 1)
+    end
+
+    it "reduces a large linked list" do
+      expect(
+        [1, 2, 3]
+        |> LinkedList.from_list
+        |> Enum.reduce(0, fn curr, acc -> curr + acc end)
+      ) |> to(eq 6)
+    end
+  end
+
+  describe "Inspect implementation" do
+    it "inspects an empty linked list" do
+      expect([] |> LinkedList.from_list |> inspect) |> to(eq "[]")
+    end
+
+    it "inspects an single-node linked list" do
+      expect([1] |> LinkedList.from_list |> inspect) |> to(eq "[1]")
+    end
+
+    it "inspects a large linked list" do
+      expect([1, 2, 3] |> LinkedList.from_list |> inspect) |> to(eq "[1, 2, 3]")
     end
   end
 end
