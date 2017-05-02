@@ -89,7 +89,7 @@ defmodule LinkedList do
   end
 
   # Exporting Nodes
-  
+
   @doc """
   Converts a linked list to a regular list.
   """
