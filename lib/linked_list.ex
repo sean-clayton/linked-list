@@ -19,7 +19,7 @@ defmodule LinkedList do
   require Logger
 
   @enforce_keys [:value, :next]
-  @type t :: %LinkedList{value: any, next: t} | :empty
+  @type t :: %LinkedList{value: any, next: t} | empty
   @type empty :: %LinkedList{value: nil, next: nil}
   defstruct [:value, :next]
 

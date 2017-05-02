@@ -19,6 +19,10 @@ defmodule LinkedList.Mixfile do
         "coveralls.post": :test,
         "coveralls.html": :test,
         espec: :test,
+      ],
+      docs: [
+        main: "LinkedList", # The main page in the docs
+        extras: ["README.md"]
       ]
     ]
   end
