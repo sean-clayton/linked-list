@@ -44,15 +44,21 @@ defmodule LinkedList do
 
   ## Examples
 
-      iex> LinkedList.create(1, LinkedList.create(2, LinkedList.create(3)))
-      [1, 2, 3]
-
       iex> LinkedList.create()
       []
   """
 
   @spec create :: empty
   def create, do: %LinkedList{value: nil, next: nil}
+
+  @doc """
+  Creates a linked list node. Useful for chaining.
+
+  ## Examples
+
+      iex> LinkedList.create()
+      []
+  """
 
   def create(value, next \\ %LinkedList{value: nil, next: nil})
 

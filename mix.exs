@@ -22,6 +22,7 @@ defmodule LinkedList.Mixfile do
       ],
       docs: [
         main: "LinkedList", # The main page in the docs
+        source_url: "https://github.com/sean-clayton/linked-list",
         extras: ["README.md"]
       ]
     ]
