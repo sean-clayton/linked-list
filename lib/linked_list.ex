@@ -116,17 +116,16 @@ defmodule LinkedList do
   def join(node, delim \\ "")
 
   @spec join(empty, binary) :: <<>>
-  def join(%LinkedList{value: nil, next: nil}, _delim) do
-    ""
+  def join(%LinkedList{value: nil, next: nil}, _delim), do: ""
+
+  @spec join(t, binary) :: binary
+  def join(%LinkedList{value: value, next: %LinkedList{value: nil, next: nil}}, _delim) do
+    "#{value}"
   end
 
   @spec join(t, binary) :: binary
-  def join(%LinkedList{value: value, next: next}, delim) do
-    if next == %LinkedList{value: nil, next: nil} do
-      "#{value}"
-    else
-      "#{value}#{delim}#{join(next, delim)}"
-    end
+  def join(%LinkedList{ value: value, next: next}, delim) do
+    "#{value}#{delim}#{LinkedList.join(next, delim)}"
   end
 
   @spec to_string(t) :: binary
